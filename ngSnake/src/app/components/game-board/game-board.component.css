@@ -1,0 +1,9 @@
+.game-board {
+  position: relative;
+  width: 400px; 
+  height: 400px;
+  background-color: black;
+  display: grid;
+  grid-template-columns: repeat(38, 10px);
+  grid-template-rows: repeat(38, 10px); 
+}

@@ -1,0 +1,7 @@
+.snake-segment {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(48, 3, 248);
+  }
+  
