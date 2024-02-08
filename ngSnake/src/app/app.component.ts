@@ -61,6 +61,11 @@ export class AppComponent implements OnInit {
 
   onRestartGame(): void {
     window.location.reload();
+    // this.gameOver = false;
+    // this.gameEngine.restartGame();
+    // this.cdr.detectChanges();
+    // this.gameEngine.startGame();
+    
   }
 
   get snake(): SnakeModel {
