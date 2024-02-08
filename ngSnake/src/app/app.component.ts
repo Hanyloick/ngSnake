@@ -1,6 +1,12 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { GameEngine } from './services/engine.service';
-import { Direction, SnakeModel } from './models/snake/snake';
+import { Direction, Snake, SnakeModel } from './models/snake/snake';
+import { FoodModel } from './models/food/food';
 
 @Component({
   selector: 'app-root',
@@ -9,20 +15,25 @@ import { Direction, SnakeModel } from './models/snake/snake';
 })
 export class AppComponent implements OnInit {
   title = 'ngSnake';
-  snake = this.gameEngine.snakeModel;
-  food = this.gameEngine.foodModel;
-  constructor(private gameEngine: GameEngine) {}
+  gameOver = false;
+
+  constructor(private gameEngine: GameEngine, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-     this.gameEngine.startGame();
+    this.gameEngine.gameOverEvent.subscribe(() => {
+      this.onGameOver();
+    });
   }
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     let direction: Direction | null = null;
     switch (event.key) {
+      case 't':
+        this.gameEngine.startGame();
+        break;
       case 'ArrowUp':
-      case'w':
+      case 'w':
         direction = Direction.Up;
         break;
       case 'ArrowDown':
@@ -42,5 +53,21 @@ export class AppComponent implements OnInit {
     if (direction !== null) {
       this.gameEngine.handleInput(direction);
     }
+  }
+  
+  onGameOver(): void {
+    this.gameOver = true;
+  }
+
+  onRestartGame(): void {
+    window.location.reload();
+  }
+
+  get snake(): SnakeModel {
+    return this.gameEngine.getSnakeModel();
+  }
+
+  get food(): FoodModel {
+    return this.gameEngine.getFoodModel();
   }
 }

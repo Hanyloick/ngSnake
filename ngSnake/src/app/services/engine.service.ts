@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { FoodModel } from '../models/food/food';
 import { Direction, SnakeModel, SnakeSegment } from '../models/snake/snake';
 
@@ -19,9 +20,22 @@ export class GameEngine {
     this.foodModel = new FoodModel(this.snakeModel.getSegments());
   }
 
+  getSnakeModel(): SnakeModel {
+    return this.snakeModel;
+  }
+
+  getFoodModel(): FoodModel {
+    return this.foodModel;
+  }
+
   startGame(): void {
     this.updateGame();
   }
+
+  // restartGame() {
+  //   this.snakeModel.reset(this.initialSegments, this.initialDirection);
+  //   this.foodModel.generateFood(this.snakeModel.getSegments());
+  // }
 
   private updateGame(): void {
     this.snakeModel.move();
@@ -38,8 +52,10 @@ export class GameEngine {
 
     setTimeout(() => {
       requestAnimationFrame(() => this.updateGame());
-    }, 50);
+    }, 60);
   }
+
+  gameOverEvent: EventEmitter<void> = new EventEmitter<void>();
 
   private checkSelfOrBoardCollisions(): boolean {
     const snakeHead = this.snakeModel.getHeadPosition();
@@ -50,6 +66,7 @@ export class GameEngine {
         snakeSegments[i].x === snakeHead.x &&
         snakeSegments[i].y === snakeHead.y
       ) {
+        this.gameOverEvent.emit();
         return true;
       }
     }
@@ -62,6 +79,7 @@ export class GameEngine {
       snakeHead.y < 0 ||
       snakeHead.y > BOARD_HEIGHT
     ) {
+      this.gameOverEvent.emit();
       return true;
     }
 
