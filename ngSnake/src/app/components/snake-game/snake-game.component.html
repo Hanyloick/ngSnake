@@ -1,2 +1,4 @@
 <app-game-board [food]="food" [snake]="snake"></app-game-board>
 <app-restart *ngIf="gameOver" (restart)="onRestartGame()"></app-restart>
+<app-start *ngIf="!startGame"></app-start>
+<app-score-board *ngIf="startGame"[score]="score"></app-score-board>

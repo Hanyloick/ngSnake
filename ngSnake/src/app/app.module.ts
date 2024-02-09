@@ -8,6 +8,8 @@ import { FoodComponent } from './components/food/food.component';
 import { GameEngine } from './services/engine.service';
 import { RestartComponent } from './components/restart/restart.component';
 import { SnakeGameComponent } from './components/snake-game/snake-game.component';
+import { StartComponent } from './components/start/start.component';
+import { ScoreBoardComponent } from './components/score-board/score-board.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { SnakeGameComponent } from './components/snake-game/snake-game.component
     SnakeComponent,
     FoodComponent,
     RestartComponent,
-    SnakeGameComponent
+    SnakeGameComponent,
+    StartComponent,
+    ScoreBoardComponent
   ],
   imports: [
     BrowserModule

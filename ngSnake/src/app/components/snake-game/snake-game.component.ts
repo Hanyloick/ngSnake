@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { FoodModel } from 'src/app/models/food/food';
 import { Direction, SnakeModel } from 'src/app/models/snake/snake';
 import { GameEngine } from 'src/app/services/engine.service';
@@ -6,10 +11,11 @@ import { GameEngine } from 'src/app/services/engine.service';
 @Component({
   selector: 'app-snake-game',
   templateUrl: './snake-game.component.html',
-  styleUrls: ['./snake-game.component.css']
+  styleUrls: ['./snake-game.component.css'],
 })
 export class SnakeGameComponent implements OnInit {
   gameOver = false;
+  startGame = false;
 
   constructor(private gameEngine: GameEngine, private cdr: ChangeDetectorRef) {}
 
@@ -24,23 +30,41 @@ export class SnakeGameComponent implements OnInit {
     let direction: Direction | null = null;
     switch (event.key) {
       case 't':
-        this.gameEngine.startGame();
+        if (!this.startGame) {
+          this.gameEngine.startGame();
+          this.startGame = true;
+        }
         break;
+      case 'r':
+        if (this.gameOver) {
+          this.gameOver = false;
+          this.gameEngine.restartGame();
+          this.startGame = false;
+        }
+      break;
       case 'ArrowUp':
       case 'w':
-        direction = Direction.Up;
+        if (this.startGame) {
+          direction = Direction.Up;
+        }
         break;
       case 'ArrowDown':
       case 's':
-        direction = Direction.Down;
+        if (this.startGame) {
+          direction = Direction.Down;
+        }
         break;
       case 'ArrowLeft':
       case 'a':
-        direction = Direction.Left;
+        if (this.startGame) {
+          direction = Direction.Left;
+        }
         break;
       case 'ArrowRight':
       case 'd':
-        direction = Direction.Right;
+        if (this.startGame) {
+          direction = Direction.Right;
+        }
         break;
     }
 
@@ -48,19 +72,12 @@ export class SnakeGameComponent implements OnInit {
       this.gameEngine.handleInput(direction);
     }
   }
-  
+
   onGameOver(): void {
     this.gameOver = true;
   }
 
-  onRestartGame(): void {
-    window.location.reload();
-    // this.gameOver = false;
-    // this.gameEngine.restartGame();
-    // this.cdr.detectChanges();
-    // this.gameEngine.startGame();
-    
-  }
+  onRestartGame(): void {}
 
   get snake(): SnakeModel {
     return this.gameEngine.getSnakeModel();
@@ -68,5 +85,9 @@ export class SnakeGameComponent implements OnInit {
 
   get food(): FoodModel {
     return this.gameEngine.getFoodModel();
+  }
+
+  get score(): number {
+    return this.gameEngine.score;
   }
 }

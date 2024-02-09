@@ -1,6 +1,8 @@
 import { EventEmitter } from '@angular/core';
 import { FoodModel } from '../models/food/food';
 import { Direction, SnakeModel, SnakeSegment } from '../models/snake/snake';
+import { cloneDeep } from 'lodash';
+
 
 export class GameEngine {
   initialSegments: SnakeSegment[] = [
@@ -11,13 +13,17 @@ export class GameEngine {
   initialDirection: Direction = Direction.Up;
   snakeModel: SnakeModel;
   foodModel: FoodModel;
+  score:number = 0;
 
   constructor() {
+    const cloneSegments = cloneDeep(this.initialSegments);
+    const cloneDirection = cloneDeep(this.initialDirection);
     this.snakeModel = new SnakeModel(
-      this.initialSegments,
-      this.initialDirection
+      cloneSegments,
+      cloneDirection
     );
     this.foodModel = new FoodModel(this.snakeModel.getSegments());
+    this.score = this.score;
   }
 
   getSnakeModel(): SnakeModel {
@@ -32,10 +38,15 @@ export class GameEngine {
     this.updateGame();
   }
 
-  // restartGame() {
-  //   this.snakeModel.reset(this.initialSegments, this.initialDirection);
-  //   this.foodModel.generateFood(this.snakeModel.getSegments());
-  // }
+  restartGame() {
+    const cloneSegments = cloneDeep(this.initialSegments);
+    const cloneDirection = cloneDeep(this.initialDirection);
+    this.score = 0;
+    this.snakeModel.reset(cloneSegments, cloneDirection);
+    console.log(this.foodModel.getFoodPosition().x +" " + this.foodModel.getFoodPosition().y + " in engine before gen food");
+    this.foodModel.newFood(cloneSegments);
+    console.log(this.foodModel.getFoodPosition().x +" " + this.foodModel.getFoodPosition().y + " in engine after gen food");
+  }
 
   private updateGame(): void {
     this.snakeModel.move();
@@ -48,6 +59,7 @@ export class GameEngine {
     if (this.foodCollision()) {
       this.snakeModel.grow();
       this.foodModel.newFood(this.snakeModel.getSegments());
+      this.score++
     }
 
     setTimeout(() => {

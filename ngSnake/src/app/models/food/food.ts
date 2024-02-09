@@ -26,7 +26,7 @@ export class FoodModel {
         foodPosition = { x, y };
       }
     } while (!foodPosition);
-
+    console.log(foodPosition.x + " " + foodPosition.y + " in food model")
     return foodPosition;
   }
 

@@ -7,10 +7,5 @@ import { GameEngine } from 'src/app/services/engine.service';
   styleUrls: ['./restart.component.css']
 })
 export class RestartComponent {
-  @Output() restart: EventEmitter<void> = new EventEmitter<void>();
-
-  restartGame(): void {
-    this.restart.emit();
-  }
 
 }
