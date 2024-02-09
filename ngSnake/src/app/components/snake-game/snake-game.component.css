@@ -1,29 +1,36 @@
 .snake-game {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
+    justify-content: center;
+    align-items: center;
     height: 100vh;
     background-color: rgb(0, 44, 0);
-  }
-  
-  .scoreboard,
-  .restart,
-  .start {
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+.scoreboard,
+.restart,
+.start {
     background-color: #333;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .scoreboard,
-  .start-restart {
-    margin: 10px; /* Add space around the scoreboard and start/restart components */
-  }
-  
-  .game-board {
-    border: 2px solid #333; /* Adjust border for game board */
-    border-radius: 5px; /* Add border radius for game board */
-  }
-  
+    margin: 10px 0; /* Adjust margin */
+    width: 100%; /* Make width same as game board */
+    max-width: 400px; /* Example maximum width */
+}
+
+.scoreboard p,
+.restart h1,
+.start h1 {
+    margin: 0; /* Remove default margin */
+}
+
+.game-board {
+    border: 2px solid #333;
+    border-radius: 5px;
+    margin: 0; /* Remove default margin */
+    width: 400px; /* Example width of the game board */
+}
