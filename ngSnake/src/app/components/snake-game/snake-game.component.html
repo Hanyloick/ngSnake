@@ -1,4 +1,17 @@
-<app-game-board [food]="food" [snake]="snake"></app-game-board>
-<app-restart *ngIf="gameOver" (restart)="onRestartGame()"></app-restart>
-<app-start *ngIf="!startGame"></app-start>
-<app-score-board *ngIf="startGame"[score]="score"></app-score-board>
+<div class="snake-game">
+    <div class="scoreboard">
+      <p>Score: {{ score }}</p>
+    </div>
+    <div class="game-board">
+      <app-game-board [food]="food" [snake]="snake"></app-game-board>
+    </div>
+    <div class="start-restart">
+      <div *ngIf="!startGame" class="start">
+        <h1>Press T to start</h1>
+      </div>
+      <div *ngIf="gameOver" class="restart">
+        <h1>Press R To Replay</h1>
+      </div>
+    </div>
+  </div>
+  
