@@ -29,9 +29,6 @@ export class SnakeModel {
   reset(startingSegments: SnakeSegment[], startingDirection: Direction) {
     this.snake.segments = startingSegments;
     this.snake.direction = startingDirection;
-    this.snake.segments.forEach(segment => {
-      console.log(segment.x + " " + segment.y + "in snake model");
-    });
   }
 
   getSegments(): SnakeSegment[] {

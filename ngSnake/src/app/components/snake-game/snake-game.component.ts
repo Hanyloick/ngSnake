@@ -41,7 +41,7 @@ export class SnakeGameComponent implements OnInit {
           this.gameEngine.restartGame();
           this.startGame = false;
         }
-      break;
+        break;
       case 'ArrowUp':
       case 'w':
         if (this.startGame) {
@@ -77,8 +77,6 @@ export class SnakeGameComponent implements OnInit {
     this.gameOver = true;
   }
 
-  onRestartGame(): void {}
-
   get snake(): SnakeModel {
     return this.gameEngine.getSnakeModel();
   }
@@ -87,7 +85,7 @@ export class SnakeGameComponent implements OnInit {
     return this.gameEngine.getFoodModel();
   }
 
-  get score(): number {
-    return this.gameEngine.score;
+  get score(): Number {
+    return this.gameEngine.getScore();
   }
 }

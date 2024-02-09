@@ -3,55 +3,36 @@ import { FoodModel } from '../models/food/food';
 import { Direction, SnakeModel, SnakeSegment } from '../models/snake/snake';
 import { cloneDeep } from 'lodash';
 
-
 export class GameEngine {
-  initialSegments: SnakeSegment[] = [
+  private initialSegments: SnakeSegment[] = [
     { x: 19, y: 34 },
     { x: 19, y: 35 },
     { x: 19, y: 36 },
   ];
-  initialDirection: Direction = Direction.Up;
-  snakeModel: SnakeModel;
-  foodModel: FoodModel;
-  score:number = 0;
+  private initialDirection: Direction = Direction.Up;
+  private snakeModel: SnakeModel;
+  private foodModel: FoodModel;
+  private score: number = 0;
+  gameOverEvent: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() {
-    const cloneSegments = cloneDeep(this.initialSegments);
-    const cloneDirection = cloneDeep(this.initialDirection);
     this.snakeModel = new SnakeModel(
-      cloneSegments,
-      cloneDirection
+      this.getCloneSegments(),
+      this.getCloneDirection()
     );
     this.foodModel = new FoodModel(this.snakeModel.getSegments());
     this.score = this.score;
-  }
-
-  getSnakeModel(): SnakeModel {
-    return this.snakeModel;
-  }
-
-  getFoodModel(): FoodModel {
-    return this.foodModel;
   }
 
   startGame(): void {
     this.updateGame();
   }
 
-  restartGame() {
-    const cloneSegments = cloneDeep(this.initialSegments);
-    const cloneDirection = cloneDeep(this.initialDirection);
-    this.score = 0;
-    this.snakeModel.reset(cloneSegments, cloneDirection);
-    console.log(this.foodModel.getFoodPosition().x +" " + this.foodModel.getFoodPosition().y + " in engine before gen food");
-    this.foodModel.newFood(cloneSegments);
-    console.log(this.foodModel.getFoodPosition().x +" " + this.foodModel.getFoodPosition().y + " in engine after gen food");
-  }
-
   private updateGame(): void {
     this.snakeModel.move();
 
     if (this.checkSelfOrBoardCollisions()) {
+      this.gameOverEvent.emit();
       console.log('Game Over!');
       return;
     }
@@ -59,15 +40,13 @@ export class GameEngine {
     if (this.foodCollision()) {
       this.snakeModel.grow();
       this.foodModel.newFood(this.snakeModel.getSegments());
-      this.score++
+      this.score++;
     }
 
     setTimeout(() => {
       requestAnimationFrame(() => this.updateGame());
     }, 60);
   }
-
-  gameOverEvent: EventEmitter<void> = new EventEmitter<void>();
 
   private checkSelfOrBoardCollisions(): boolean {
     const snakeHead = this.snakeModel.getHeadPosition();
@@ -78,7 +57,6 @@ export class GameEngine {
         snakeSegments[i].x === snakeHead.x &&
         snakeSegments[i].y === snakeHead.y
       ) {
-        this.gameOverEvent.emit();
         return true;
       }
     }
@@ -91,7 +69,6 @@ export class GameEngine {
       snakeHead.y < 0 ||
       snakeHead.y > BOARD_HEIGHT
     ) {
-      this.gameOverEvent.emit();
       return true;
     }
 
@@ -104,7 +81,36 @@ export class GameEngine {
     return snakeHead.x === foodPosition.x && snakeHead.y === foodPosition.y;
   }
 
+  restartGame() {
+    this.score = 0;
+    this.snakeModel = new SnakeModel(
+      this.getCloneSegments(),
+      this.getCloneDirection()
+    );
+  }
+
   handleInput(newDirection: Direction): void {
     this.snakeModel.setDirection(newDirection);
+  }
+
+  getSnakeModel(): SnakeModel {
+    return cloneDeep(this.snakeModel);
+  }
+
+  getFoodModel(): FoodModel {
+    return cloneDeep(this.foodModel);
+  }
+
+  getScore(): Number {
+    const scoreCopy = this.score;
+    return scoreCopy;
+  }
+
+  getCloneSegments(): SnakeSegment[] {
+    return cloneDeep(this.initialSegments);
+  }
+
+  getCloneDirection(): Direction {
+    return cloneDeep(this.initialDirection);
   }
 }
