@@ -13,3 +13,8 @@
     `npm install`
 3. Run
     `ng serve -o`
+
+## Controls
+
+>T to start game and R to restart.
+WASD or Arrow Keys to change direction.
