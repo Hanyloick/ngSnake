@@ -16,6 +16,7 @@ import { GameEngine } from 'src/app/services/engine.service';
 export class SnakeGameComponent implements OnInit {
   gameOver = false;
   startGame = false;
+  isPaused = false;
 
   constructor(private gameEngine: GameEngine, private cdr: ChangeDetectorRef) {}
 
@@ -42,27 +43,36 @@ export class SnakeGameComponent implements OnInit {
           this.startGame = false;
         }
         break;
+      case ' ':
+        if(!this.isPaused) {
+          this.gameEngine.pauseGame();
+          this.isPaused = !this.isPaused;
+        } else {
+          this.gameEngine.startGame();
+          this.isPaused = !this.isPaused;
+        }
+        break;
       case 'ArrowUp':
       case 'w':
-        if (this.startGame) {
+        if (this.isMovable()) {
           direction = Direction.Up;
         }
         break;
       case 'ArrowDown':
       case 's':
-        if (this.startGame) {
+        if (this.isMovable()) {
           direction = Direction.Down;
         }
         break;
       case 'ArrowLeft':
       case 'a':
-        if (this.startGame) {
+        if (this.isMovable()) {
           direction = Direction.Left;
         }
         break;
       case 'ArrowRight':
       case 'd':
-        if (this.startGame) {
+        if (this.isMovable()) {
           direction = Direction.Right;
         }
         break;
@@ -71,6 +81,10 @@ export class SnakeGameComponent implements OnInit {
     if (direction !== null) {
       this.gameEngine.handleInput(direction);
     }
+  }
+
+  isMovable(): boolean {
+    return this.startGame && !this.isPaused;
   }
 
   onGameOver(): void {

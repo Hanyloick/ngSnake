@@ -1,4 +1,5 @@
 <div class="snake-game">
+  <div class="container">
     <div class="scoreboard">
       <p>Score: {{ score }}</p>
     </div>
@@ -6,12 +7,16 @@
       <app-game-board [food]="food" [snake]="snake"></app-game-board>
     </div>
     <div class="start-restart">
-      <div *ngIf="!startGame" class="start">
+      <div *ngIf="!startGame">
         <h1>Press T to start</h1>
       </div>
-      <div *ngIf="gameOver" class="restart">
+      <div *ngIf="gameOver">
         <h1>Press R To Replay</h1>
+      </div>
+      <div *ngIf="startGame && !gameOver" >
+        <h1>Use WASD or Arrow Keys to move</h1>
+        <h1>Use SPACE to pause.</h1>
       </div>
     </div>
   </div>
-  
+</div>

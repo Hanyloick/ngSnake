@@ -13,6 +13,8 @@ export class GameEngine {
   private snakeModel: SnakeModel;
   private foodModel: FoodModel;
   private score: number = 0;
+  private timeOut: any;
+
   gameOverEvent: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() {
@@ -43,9 +45,13 @@ export class GameEngine {
       this.score++;
     }
 
-    setTimeout(() => {
+    this.timeOut = setTimeout(() => {
       requestAnimationFrame(() => this.updateGame());
     }, 60);
+  }
+
+  pauseGame(): void {
+    clearTimeout(this.timeOut);
   }
 
   private checkSelfOrBoardCollisions(): boolean {
@@ -81,7 +87,7 @@ export class GameEngine {
     return snakeHead.x === foodPosition.x && snakeHead.y === foodPosition.y;
   }
 
-  restartGame() {
+  restartGame():void {
     this.score = 0;
     this.snakeModel = new SnakeModel(
       this.getCloneSegments(),
