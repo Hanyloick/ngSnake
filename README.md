@@ -14,6 +14,10 @@
 3. Run
     `ng serve -o`
 
+## Play in Browser
+
+>[play](http://18.216.79.214:8080/ngSnake)
+
 ## Controls
 
 >T to start game and R to restart.
