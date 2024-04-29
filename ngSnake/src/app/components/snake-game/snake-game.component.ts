@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   HostListener,
   OnInit,
@@ -18,7 +17,7 @@ export class SnakeGameComponent implements OnInit {
   startGame = false;
   isPaused = false;
 
-  constructor(private gameEngine: GameEngine, private cdr: ChangeDetectorRef) {}
+  constructor(private gameEngine: GameEngine) {}
 
   ngOnInit(): void {
     this.gameEngine.gameOverEvent.subscribe(() => {
